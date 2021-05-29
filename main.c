@@ -11,7 +11,7 @@ int *elemsForN(int size);
 
 int *binaryElements(int *func, int size, int count);
 
-int *anfRepresentation(int *func, int *size);
+int *anfRepresentation(int *func, int size);
 
 
 
@@ -106,12 +106,12 @@ int main(int args, char **argv) {
         printf("%d", func[i]);
     }*/
 
-    int * func2 = anfRepresentation(f, &size);
-    for (int i = 0; i < size; ++i) {
+    int * func2 = anfRepresentation(f, size);
+    for (int i = 0; i < 4; ++i) {
         printf("%d ", func2[i]);
     }
 
-
+    free(func2);
 
     return 0;
 }
@@ -152,18 +152,19 @@ int *elemsForN(int size) {
     return result;
 }
 
-int *anfRepresentation(int *func, int *size) {
-    int *result = calloc(*size, sizeof (int));
+int *anfRepresentation(int *func, int size) {
+    int newSize = size;
+    int *result = calloc(newSize, sizeof (int));
     int j;
-    for (int i = 0; i < *size; ++i) {
+    for (int i = 0; i < newSize; ++i) {
         if (func[i] != 0) {
             result[j] = i;
             ++j;
         }
     }
-    *size = 4;
-    result = realloc(result,*size);
-    printf("%d ",*size);
+    newSize = j;
+    result = realloc(result,newSize);
+    printf("%d ",newSize);
     printf("\n");
     return result;
 }
