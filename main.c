@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
 #include <string.h>
-#include <windows.h> // заголовочный файл, содержащий функции API
+#include <windows.h>
 
 int raiseToPower(int num, int pow);
 
@@ -14,7 +15,6 @@ int *binaryElements(int *func, int size, int count);
 int *anfRepresentation(int *func, int size);
 
 
-
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
@@ -23,7 +23,7 @@ int main(int args, char **argv) {
     int size = raiseToPower(2, n);
     int *binElems = elemsForN(size);
     int f[] = {1, 0, 0, 1, 0, 1, 1, 0};
-
+    int sizeOfF = sizeof(f)/sizeof(int);
 
     for (int i = 0; i < size; ++i) {
         printf("%d ", binElems[i]);
@@ -37,79 +37,22 @@ int main(int args, char **argv) {
         }
         printf("\n");
     }
-/*
-    int *x1 = malloc(size * sizeof(int));
-    int *x2 = malloc(size * sizeof(int));
-    int *x3 = malloc(size * sizeof(int));
 
-    for (int i = 0; i < n; ++i) {
-        if (i == 0) {
-            for (int j = 0; j < size; ++j) {
-                x1[j] = ar[i * size + j];
-                printf("%d ", x1[j]);
-            }
-            printf("\n");
-        } else if (i == 1) {
-            for (int j = 0; j < size; ++j) {
-                x2[j] = ar[i * size + j];
-                printf("%d ", x2[j]);
-            }
-            printf("\n");
-        } else if (i == 2) {
-            for (int j = 0; j < size; ++j) {
-                x3[j] = ar[i * size + j];
-                printf("%d ", x3[j]);
-            }
-            printf("\n");
-        }
-    }
-    /*
-
-    int *ANF1 = malloc(size * sizeof(char));
-    for (int i = 0; i < size; ++i) {
-        if (x1[i] == 0) {
-            ANF1[i] = '0';
-        } else if (x1[i] == 1) {
-            ANF1[i] = 'x';
-        }
-        printf("%c ", ANF1[i]);
-    }
-    printf("\n");
-
-    int *ANF2 = malloc(size * sizeof(char));
-    for (int i = 0; i < size; ++i) {
-        if (x2[i] == 0) {
-            ANF2[i] = '0';
-        } else if (x2[i] == 1) {
-            ANF2[i] = 'x';
-        }
-        printf("%c ", ANF2[i]);
-    }
-    printf("\n");
-
-    int *ANF3 = malloc(size * sizeof(char));
-    for (int i = 0; i < size; ++i) {
-        if (x3[i] == 0) {
-            ANF3[i] = '0';
-        } else if (x3[i] == 1) {
-            ANF3[i] = 'x';
-        }
-        printf("%c ", ANF3[i]);
-    }
-    printf("\n");*/
-
-    /*int *func = malloc(size * sizeof(char));
-    for (int i = 0; i < size; ++i) {
-      func[i] = x2[i]^x3[i]^x1[i]*x3[i]^x2[i]*x3[i];
-    }
-    for (int i = size-1; i >= 0; --i) {
-        printf("%d", func[i]);
-    }*/
-
-    int * func2 = anfRepresentation(f, size);
-    for (int i = 0; i < 4; ++i) {
+    int * func2 = anfRepresentation(f, sizeOfF);
+    for (int i = 0; i < sizeOfF; ++i) {
         printf("%d ", func2[i]);
     }
+
+    printf("\nБулеві значення для змінних\n");
+    int *ar2 = binaryElements(func2, size, n);
+    for (int i = 0; i < n; ++i) {
+        printf("x%d = ", i + 1);
+        for (int j = 0; j < size; ++j) {
+            printf("%d ", ar2[i * size + j]);
+        }
+        printf("\n");
+    }
+
 
     free(func2);
 
@@ -117,7 +60,7 @@ int main(int args, char **argv) {
 }
 
 int *binaryElements(int *arr, int size, int count) {
-    int *result = calloc(size * count, sizeof(int));
+    int *result = calloc(size*count, sizeof(int));
     for (int i = 0; i < size; ++i) {
         int *bin = valueToBinary(arr[i], count);
         for (int j = 0, k = count - 1; j < count; ++j, k--) {
@@ -152,19 +95,20 @@ int *elemsForN(int size) {
     return result;
 }
 
-int *anfRepresentation(int *func, int size) {
-    int newSize = size;
+int *anfRepresentation(int *func, int sizeOfF) {
+    int newSize = sizeOfF;
     int *result = calloc(newSize, sizeof (int));
     int j;
     for (int i = 0; i < newSize; ++i) {
         if (func[i] != 0) {
-            result[j] = i;
+            result[i] = i;
             ++j;
         }
+        else if (func[i] == 0) {
+            result[i] = 0;
+        }
     }
-    newSize = j;
-    result = realloc(result,newSize);
-    printf("%d ",newSize);
     printf("\n");
     return result;
 }
+
