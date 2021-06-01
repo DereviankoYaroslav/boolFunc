@@ -45,15 +45,7 @@ int main(int args, char **argv) {
         printf("%d ", func2[i]);
     }
 
-    printf("\nБулеві значення для змінних\n");
-    int *ar2 = binaryElements(func2, size, n);
-    for (int i = 0; i < n; ++i) {
-        printf("x%d = ", i + 1);
-        for (int j = 0; j < size; ++j) {
-            printf("%d ", ar2[i * size + j]);
-        }
-        printf("\n");
-    }
+    printf("\n");
 
     int *ar3 = functionElems(func2, ar, size, n);
     for (int i = 0; i < n; ++i) {
