@@ -18,6 +18,8 @@ int *functionElems(int *arr, int *arr2, int size, int count);
 
 int boolMassSize(int *arr, int *arr2, int size, int count);
 
+int *boolMass(int *arr, int *arr2, int size, int newSize, int count);
+
 
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
@@ -26,7 +28,7 @@ int main(int args, char **argv) {
     int n = 3;
     int size = raiseToPower(2, n);
     int *binElems = elemsForN(size);
-    int f[] = {1, 0, 0, 1, 0, 1, 1, 0};
+    int f[] = {1, 0, 0, 1, 0, 1, 1, 1};
     int sizeOfF = sizeof(f) / sizeof(int);
 
     for (int i = 0; i < size; ++i) {
@@ -58,8 +60,29 @@ int main(int args, char **argv) {
         printf("\n");
     }
 
-    int newSize = boolMassSize(ar3,ar,size,n);
-    printf("sum =%d",newSize);
+    int newSize = boolMassSize(ar3, ar, size, n);
+    printf("sum =%d", newSize);
+
+    int *ar4 = boolMass(ar3, ar, size, newSize, n);
+    for (int i = 0; i < newSize; ++i) {
+        printf("%d ", ar4[i]);
+    }
+    printf("\n");
+
+    int summa = 0;
+    for (int i = 0; i < newSize; ++i) {
+        if(ar4[i]!=0) {
+            summa = ar4[i];
+        }
+        printf("\n");
+        ar4[i] = 0;
+        for (int j = 0; j < newSize; ++j) {
+            if (summa%size == ar4[j] % size && ar4[j] != 0) {
+                summa = summa + ar4[j];
+                printf("summa =%d ", summa);
+            }
+        }
+    }
 
     free(ar);
     free(func2);
@@ -105,24 +128,36 @@ int *functionElems(int *arr, int *arr2, int size, int count) {
     return result;
 }
 
-int boolMassSize(int *arr, int *arr2, int size, int count){
-    int newSize =0;
+int boolMassSize(int *arr, int *arr2, int size, int count) {
+    int newSize = 0;
     for (int i = 0; i < count; ++i) {
         for (int j = 0; j < size; ++j) {
-            if (arr[i*size+j]>0) {
-                printf("%d ", arr[i * size + j]);
+            if (arr[i * size + j] > 0) {
                 printf("\n");
-                printf("arr[i]= %d", arr2[i*size+j]);
-                printf("index = %d", i*size+j);
+                printf("index = %d", i * size + j);
                 printf("\n");
-                newSize = newSize+1;
-                printf("size = %d",newSize);
-
+                newSize = newSize + 1;
+                printf("size = %d", newSize);
             }
         }
         printf("\n");
     }
     return newSize;
+}
+
+int *boolMass(int *arr, int *arr2, int size, int newSize, int count) {
+    int *result = calloc(newSize, sizeof(int));
+    int k = 0;
+    for (int i = 0; i < count; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (arr[i * size + j] > 0) {
+                result[k] = i * size + j;
+                ++k;
+            }
+        }
+        printf("\n");
+    }
+    return result;
 }
 
 
