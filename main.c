@@ -16,6 +16,8 @@ int *anfRepresentation(int *func, int size);
 
 int *functionElems(int *arr, int *arr2, int size, int count);
 
+int boolMassSize(int *arr, int *arr2, int size, int count);
+
 
 int main(int args, char **argv) {
     SetConsoleOutputCP(1251);
@@ -46,17 +48,22 @@ int main(int args, char **argv) {
     }
 
     printf("\n");
+    printf("\n");
 
     int *ar3 = functionElems(func2, ar, size, n);
     for (int i = 0; i < n; ++i) {
-        printf("x%d = ", i + 1);
         for (int j = 0; j < size; ++j) {
             printf("%d ", ar3[i * size + j]);
         }
         printf("\n");
     }
 
+    int newSize = boolMassSize(ar3,ar,size,n);
+    printf("sum =%d",newSize);
+
+    free(ar);
     free(func2);
+    free(ar3);
 
     return 0;
 }
@@ -79,14 +86,14 @@ int *functionElems(int *arr, int *arr2, int size, int count) {
         if (arr[i] >= 0) {
             int *bin = valueToBinary(arr[i], count);
             for (int j = 0, k = count - 1; j < count; ++j, k--) {
-                if (bin[j] != 0) {
+                /*if (bin[j] != 0) {
                     printf("nnn %d\n",j*size+i);
                     int calc = arr2[arr[i]*size];
                     //printf("%d\n",calc);
                     //printf("%d\n",bin[j]);
                 } else{
                     printf("nnn %d\n",j*size+i);
-                }
+                }*/
                 result[j * size + i] = bin[k];
             }
         } else {
@@ -97,6 +104,27 @@ int *functionElems(int *arr, int *arr2, int size, int count) {
     }
     return result;
 }
+
+int boolMassSize(int *arr, int *arr2, int size, int count){
+    int newSize =0;
+    for (int i = 0; i < count; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (arr[i*size+j]>0) {
+                printf("%d ", arr[i * size + j]);
+                printf("\n");
+                printf("arr[i]= %d", arr2[i*size+j]);
+                printf("index = %d", i*size+j);
+                printf("\n");
+                newSize = newSize+1;
+                printf("size = %d",newSize);
+
+            }
+        }
+        printf("\n");
+    }
+    return newSize;
+}
+
 
 int *valueToBinary(int i, int rank) {
     int *res = calloc(rank, sizeof(int));
